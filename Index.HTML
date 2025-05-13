@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lunaar Proxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      background: #0f0f0f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px 24px;
+      margin-top: 10px;
+      font-size: 1rem;
+      background-color: #1f1f1f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    .title {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    .desc {
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Lunaar Proxy</div>
+    <div class="desc">Enter a URL to begin your escape</div>
+    <input id="urlInput" type="text" placeholder="https://example.com">
+    <button onclick="go()">Launch</button>
+  </div>
+
+  <script>
+    const encode = window.__uv$config?.encodeUrl || (str => __uv$config.prefix + btoa(str));
+    function go() {
+      let input = document.getElementById("urlInput").value.trim();
+      if (!input.startsWith("http")) input = "https://" + input;
+      location.href = __uv$config.prefix + __uv$config.encodeUrl(input);
+    }
+
+    // Inject Ultraviolet Core
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/gh/titaniumnetwork-dev/Ultraviolet/src/uv.bundle.js";
+    document.body.appendChild(script);
+
+    const configScript = document.createElement("script");
+    configScript.innerHTML = `
+      window.__uv$config = {
+        prefix: '/service/',
+        bare: 'https://raw.gitzxc.repl.co/bare/',
+        encodeUrl: function(url) {
+          return __uv$config.prefix + btoa(url);
+        }
+      };
+    `;
+    document.body.appendChild(configScript);
+  </script>
+</body>
+</html>
